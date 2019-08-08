@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 public enum PaintMode {
     Paint,
@@ -325,5 +326,11 @@ namespace TilemapCreator {
                 m_TileSetManager.LoadTileSet(map, int.Parse(TileWidthInput.Text), int.Parse(TileHeightInput.Text));
             }
         }
+
+        private void OnlyNumberInput(object sender, TextCompositionEventArgs e) {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
     }
 }

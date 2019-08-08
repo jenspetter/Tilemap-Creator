@@ -31,8 +31,8 @@
             <Label Content="Width&#xD;&#xA;" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Height="31"/>
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="223" Canvas.Left="10" Canvas.Top="10"><Run Text="Tilemap configurations"/><LineBreak/><Run/></TextBlock>
             <Label Content="Height&#xD;&#xA;&#xA;" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Height="31"/>
-            <TextBox Name="WidthInput" HorizontalAlignment="Left" Height="23" Margin="85,48,0,0" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52"/>
-            <TextBox Name="HeightInput" HorizontalAlignment="Left" Height="23" Margin="85,75,0,0" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52"/>
+            <TextBox Name="WidthInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" Margin="85,48,0,0" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52"/>
+            <TextBox Name="HeightInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" Margin="85,75,0,0" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52"/>
             <Button Name="ButtonCreateGridRoom" Click="CreateGridRoom" Content="Create grid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Left="10" Canvas.Top="106"/>
         </Canvas>
 
@@ -41,8 +41,8 @@
 
             <Label Content="Tile width" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Canvas.Left="10" Canvas.Top="44"/>
             <Label Content="Tile height" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Canvas.Left="10" Canvas.Top="72"/>
-            <TextBox Name="TileWidthInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="40" VerticalAlignment="Top" Width="52" Canvas.Left="85" Canvas.Top="48"/>
-            <TextBox Name="TileHeightInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="40" VerticalAlignment="Top" Width="52" Canvas.Left="85" Canvas.Top="75"/>
+            <TextBox Name="TileWidthInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="40" VerticalAlignment="Top" Width="52" Canvas.Left="85" Canvas.Top="48"/>
+            <TextBox Name="TileHeightInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="40" VerticalAlignment="Top" Width="52" Canvas.Left="85" Canvas.Top="75"/>
             <Button Name="ButtonLoadTileSetFromDisk" Click="ButtonLoadTileSetFromDisk_Click" Content="Load TileSet from disk" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Left="10" Canvas.Top="106"/>
             <Canvas Height="170" Background="Gray" HorizontalAlignment="Left" Name="TileSetCanvas" VerticalAlignment="Top" Width="220" Canvas.Left="10" Canvas.Top="134" />
         </Canvas>
