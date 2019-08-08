@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:TilemapCreator"
         mc:Ignorable="d" 
         Title="Room Designer" Height="697.5" Width="1059">
+    
+    
+    
     <Grid Margin="0,0,0,193">
         <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="464" Margin="258,10,0,0" VerticalAlignment="Top" Width="424">
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="194" Canvas.Left="10" Canvas.Top="10"><Run Text="Grid editor"/><LineBreak/><Run/></TextBlock>
