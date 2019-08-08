@@ -318,15 +318,10 @@ namespace TilemapCreator {
         }
 
         private void ButtonLoadTileSetFromDisk_Click(object sender, RoutedEventArgs e) {
-            OpenFileDialog op = new OpenFileDialog();
-            op.Title = "Choose a Tileset";
-            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
-              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-              "Portable Network Graphic (*.png)|*.png";
+            OpenFileDialog openDialog = Files.OpenFileDialog(OpenExtensionType.TileSet);
 
-            if (op.ShowDialog() == true) {
-                Console.WriteLine("CHOSEN");
-                BitmapImage map = new BitmapImage(new Uri(op.FileName, UriKind.Absolute));
+            if (openDialog.ShowDialog() == true) {
+                BitmapImage map = new BitmapImage(new Uri(openDialog.FileName, UriKind.Absolute));
                 m_TileSetManager.LoadTileSet(map, int.Parse(TileWidthInput.Text), int.Parse(TileHeightInput.Text));
             }
         }

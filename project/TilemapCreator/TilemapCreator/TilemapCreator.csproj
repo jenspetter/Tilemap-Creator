@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Files.cs" />
     <Compile Include="GridManager.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="TileSetManager.cs" />

@@ -39,8 +39,13 @@ namespace TilemapCreator {
         }
 
         public void ExportToJSON() {
-            string output = JsonConvert.SerializeObject(m_SaveFile);
-            File.WriteAllText(@"C:\Users\jpett\Desktop\test.json", output);
+            SaveFileDialog saveDialog = Files.OpenSaveDialog(SaveExtensionType.JSON);
+
+            if (saveDialog.FileName != "") {
+                string output = JsonConvert.SerializeObject(m_SaveFile);
+                File.WriteAllText(saveDialog.FileName, output);
+            }
+            
         }
     }
 }
