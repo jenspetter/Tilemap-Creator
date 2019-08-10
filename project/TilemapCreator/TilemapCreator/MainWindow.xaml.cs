@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
 using System.Text.RegularExpressions;
-
 public enum PaintMode {
     Paint,
     Fill,
@@ -36,6 +35,7 @@ namespace TilemapCreator {
     public partial class MainWindow : Window {
         public GridManager m_GridManager;
         public TileSetManager m_TileSetManager;
+        public Save m_SaveClass;
 
         BitmapImage carBitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/NoTile.png", UriKind.Absolute));
         CroppedBitmap croppedBitmap;
@@ -50,8 +50,7 @@ namespace TilemapCreator {
             CreateGridRoom(new object(), new RoutedEventArgs());
 
             m_TileSetManager = new TileSetManager(TileSetCanvas, this);
-
-            AddLayer(new object(), new RoutedEventArgs());
+            m_SaveClass = new Save();
         }
 
         void Image_MouseEnter(object sender, MouseEventArgs e) {
@@ -153,6 +152,12 @@ namespace TilemapCreator {
             if (canvas1.Children.Count > 0) {
                 canvas1.Children.Clear();
             }
+            if (m_GridManager.m_GridLayers.Count > 0) {
+                m_GridManager.m_GridLayers.Clear();
+            }
+            if (LayerStackPanel.Children.Count > 0) {
+                LayerStackPanel.Children.Clear();
+            }
 
             double widthHeight = canvas1.Width / int.Parse(WidthInput.Text);
 
@@ -182,6 +187,10 @@ namespace TilemapCreator {
 
                 canvas1.Children.Add(img);
             }
+
+            m_GridManager.m_LayerIndex = -1;
+            m_GridManager.m_GridLayers.Add(new GridLayer("Layer 1"));
+            AddLayer(new object(), new RoutedEventArgs());
         }
 
         private void SetPaintModePaint(object sender, RoutedEventArgs e) {
@@ -197,7 +206,6 @@ namespace TilemapCreator {
         }
 
         private void ButtonExportDataClick(object sender, RoutedEventArgs e) {
-            Save save = new Save();
             SaveFile file = new SaveFile();
 
             file.m_Name = "TEST";
@@ -214,9 +222,9 @@ namespace TilemapCreator {
             file.m_TileWidth = int.Parse(TileWidthInput.Text);
             file.m_TileHeight = int.Parse(TileHeightInput.Text);
 
-            save.SetSaveFile(file);
+            m_SaveClass.SetSaveFile(file);
 
-            save.ExportToJSON();
+            m_SaveClass.ExportToJSON();
         }
 
         private void AddLayer(object sender, RoutedEventArgs e) {
@@ -330,6 +338,29 @@ namespace TilemapCreator {
         private void OnlyNumberInput(object sender, TextCompositionEventArgs e) {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void ButtonOpenDataClick(object sender, RoutedEventArgs e) { 
+            SaveFile file = m_SaveClass.LoadFromJSON();
+
+            //Tilemap configurations
+            WidthInput.Text = file.m_TilemapWidth.ToString();
+            HeightInput.Text = file.m_TilemapHeigh.ToString();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e) {
+            System.Diagnostics.Process.Start("http://www.jenspetter.nl");
+        }
+
+        private void ButtonNewTilemapClick(object sender, RoutedEventArgs e) {
+            MessageBoxResult result = MessageBox.Show("This opens a new fresh Tilemap, do you want to save your old Tilemap?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)  {
+                ButtonExportDataClick(new object(), new RoutedEventArgs());
+            }
+            else {
+                //OPEN NEW TILEMAP
+            }
         }
     }
 }

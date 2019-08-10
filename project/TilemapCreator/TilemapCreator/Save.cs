@@ -38,6 +38,17 @@ namespace TilemapCreator {
             return m_SaveFile;
         }
 
+        public SaveFile LoadFromJSON() {
+            OpenFileDialog openDialog = Files.OpenFileDialog(OpenExtensionType.JSON);
+
+            if (openDialog.ShowDialog() == true) {
+                string input = File.ReadAllText(openDialog.FileName);
+                SaveFile file = JsonConvert.DeserializeObject<SaveFile>(input);
+                return file;
+            }
+            return null;
+        }
+
         public void ExportToJSON() {
             SaveFileDialog saveDialog = Files.OpenSaveDialog(SaveExtensionType.JSON);
 
@@ -45,7 +56,6 @@ namespace TilemapCreator {
                 string output = JsonConvert.SerializeObject(m_SaveFile);
                 File.WriteAllText(saveDialog.FileName, output);
             }
-            
         }
     }
 }

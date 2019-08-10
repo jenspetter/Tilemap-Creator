@@ -14,7 +14,8 @@ namespace TilemapCreator {
     public enum OpenExtensionType {
         TileSet,
         PNG,
-        JPG
+        JPG,
+        JSON
     }
 
     public static class Files {
@@ -22,8 +23,8 @@ namespace TilemapCreator {
             SaveFileDialog saveDialog = new SaveFileDialog();
 
             if (saveType == SaveExtensionType.JSON) {
-                saveDialog.Filter = "JSON Format|*.json";
                 saveDialog.Title = "Save JSON Format file";
+                saveDialog.Filter = "JSON Format|*.json";
                 saveDialog.ShowDialog();
                 return saveDialog;
             }
@@ -38,6 +39,11 @@ namespace TilemapCreator {
                 openDialog.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
                   "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
                   "Portable Network Graphic (*.png)|*.png";
+                return openDialog;
+            }
+            else if (openType == OpenExtensionType.JSON) {
+                openDialog.Title = "Open a JSON Tilemap file";
+                openDialog.Filter = "JSON Format|*.json";
                 return openDialog;
             }
             return null;

@@ -52,8 +52,6 @@ namespace TilemapCreator {
             m_LayerIndex = -1;
             m_GridWidth = gridWidth;
             m_GridHeight = gridHeight;
-
-            m_GridLayers.Add(new GridLayer("Layer 1"));
         }
 
         public GridLayer AddGridLayer(GridLayer layer) {
