@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.IO;
+
 public enum PaintMode {
     Paint,
     Fill,
@@ -38,7 +40,6 @@ namespace TilemapCreator {
         public Save m_SaveClass;
 
         BitmapImage carBitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/NoTile.png", UriKind.Absolute));
-        CroppedBitmap croppedBitmap;
         TileSetElement currentActiveTilesetElement;
 
         public PaintMode m_PaintMode = PaintMode.Paint;
@@ -46,10 +47,10 @@ namespace TilemapCreator {
         public MainWindow() {
             InitializeComponent();
 
-            m_GridManager = new GridManager(canvas1, int.Parse(WidthInput.Text), int.Parse(HeightInput.Text));
+            m_TileSetManager = new TileSetManager(TileSetCanvas, this);
+            m_GridManager = new GridManager(canvas1, m_TileSetManager, int.Parse(WidthInput.Text), int.Parse(HeightInput.Text));
             CreateGridRoom(new object(), new RoutedEventArgs());
 
-            m_TileSetManager = new TileSetManager(TileSetCanvas, this);
             m_SaveClass = new Save();
         }
 
@@ -77,7 +78,7 @@ namespace TilemapCreator {
                         element.m_Image.Opacity = 1;
                         element.m_Visible = true;
                         element.m_ID = currentActiveTilesetElement.m_ID;
-                        element.m_Image.Source = croppedBitmap;
+                        element.m_Image.Source = currentActiveTilesetElement.m_CroppedImage;
                     }
                     else if (m_PaintMode == PaintMode.Fill) {
                         ColorGridElement(element);
@@ -90,7 +91,7 @@ namespace TilemapCreator {
             element.m_Image.Opacity = 1;
             element.m_Visible = true;
             element.m_ID = currentActiveTilesetElement.m_ID;
-            element.m_Image.Source = croppedBitmap;
+            element.m_Image.Source = currentActiveTilesetElement.m_CroppedImage;
 
             SetFillElements(element);
         }
@@ -133,10 +134,8 @@ namespace TilemapCreator {
         public void Image_MouseDown(object sender, MouseButtonEventArgs e) {
             Image img = (Image)sender;
             ImageSource source = img.Source;
-            CroppedBitmap bp = (CroppedBitmap)img.Source;
 
             if (m_PaintMode == PaintMode.Paint) {
-                croppedBitmap = bp;
 
                 TileSetElement element = m_TileSetManager.GetTileSetElementFromImage(img);
 
@@ -147,6 +146,11 @@ namespace TilemapCreator {
         }
 
         private void CreateGridRoom(object sender, RoutedEventArgs e) {
+            GenerateGrid();
+            AddLayer(new object(), new RoutedEventArgs());
+        }
+
+        private void GenerateGrid() {
             carBitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/NoTile.png", UriKind.Absolute));
 
             if (canvas1.Children.Count > 0) {
@@ -190,7 +194,6 @@ namespace TilemapCreator {
 
             m_GridManager.m_LayerIndex = -1;
             m_GridManager.m_GridLayers.Add(new GridLayer("Layer 1"));
-            AddLayer(new object(), new RoutedEventArgs());
         }
 
         private void SetPaintModePaint(object sender, RoutedEventArgs e) {
@@ -213,14 +216,22 @@ namespace TilemapCreator {
             file.m_TilemapHeigh = int.Parse(HeightInput.Text);
 
             for (int i = 0; i < m_GridManager.m_GridLayers.Count; i++) {
-                file.m_GridLayers.Add(new List<int>());
+                List<int> addingList = new List<int>();
+                file.m_GridLayers.Add(addingList);
+                int count = 0;
                 for (int j = 0; j < m_GridManager.m_GridLayers[i].m_GridElements.Count; j++) {
                     file.m_GridLayers[i].Add(m_GridManager.m_GridLayers[i].m_GridElements[j].m_ID);
+                    count++;
+                }
+
+                if (count == 0) {
+                    file.m_GridLayers.Remove(addingList);
                 }
             }
 
             file.m_TileWidth = int.Parse(TileWidthInput.Text);
             file.m_TileHeight = int.Parse(TileHeightInput.Text);
+            file.m_LoadedTilesetPath = m_TileSetManager.m_LoadedTilesetPath;
 
             m_SaveClass.SetSaveFile(file);
 
@@ -305,7 +316,7 @@ namespace TilemapCreator {
             }
 
             m_GridManager.m_LayerIndex = buttonIndexInStackPanel;
-        }
+        } 
 
         private void ButtonLayerVisibilityClick(object sender, RoutedEventArgs e) {
             Button senderButton = (Button)sender;
@@ -331,7 +342,21 @@ namespace TilemapCreator {
 
             if (openDialog.ShowDialog() == true) {
                 BitmapImage map = new BitmapImage(new Uri(openDialog.FileName, UriKind.Absolute));
-                m_TileSetManager.LoadTileSet(map, int.Parse(TileWidthInput.Text), int.Parse(TileHeightInput.Text));
+                m_TileSetManager.LoadTileSet(openDialog.FileName, map, int.Parse(TileWidthInput.Text), int.Parse(TileHeightInput.Text));
+
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(map));
+
+                string systemDirectory = System.IO.Directory.GetCurrentDirectory();
+
+                string fileName = System.IO.Path.GetFileName(openDialog.FileName);
+                string fileExtension = System.IO.Path.GetExtension(openDialog.FileName);
+
+                System.IO.Directory.CreateDirectory(systemDirectory + "/LocalTilesets/");
+
+                using (var fileStream = new System.IO.FileStream(systemDirectory + "/LocalTilesets/" + fileName + fileExtension, System.IO.FileMode.Create)) {
+                    encoder.Save(fileStream);
+                }
             }
         }
 
@@ -340,16 +365,43 @@ namespace TilemapCreator {
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void ButtonOpenDataClick(object sender, RoutedEventArgs e) { 
+        private void ButtonOpenDataClick(object sender, RoutedEventArgs e) {
             SaveFile file = m_SaveClass.LoadFromJSON();
 
             //Tilemap configurations
             WidthInput.Text = file.m_TilemapWidth.ToString();
             HeightInput.Text = file.m_TilemapHeigh.ToString();
+            GenerateGrid();
+
+            //Tileset editor
+            BitmapImage map = new BitmapImage(new Uri(file.m_LoadedTilesetPath, UriKind.Absolute));
+            m_TileSetManager.LoadTileSet(file.m_LoadedTilesetPath, map, int.Parse(TileWidthInput.Text), int.Parse(TileHeightInput.Text));
+
+            //Layer editor
+            for (int i = 0; i < file.m_GridLayers.Count; i++) {
+                AddLayer(new object(), new RoutedEventArgs());
+            }
+
+            //Grid editor
+            for (int i = 0; i < m_GridManager.m_GridLayers.Count; i++) {
+                for (int j = 0; j < m_GridManager.m_GridLayers[i].m_GridElements.Count; j++) {
+                    
+                    double x = Canvas.GetLeft(m_GridManager.m_GridLayers[i].m_GridElements[j].m_Image);
+                    double y = Canvas.GetTop(m_GridManager.m_GridLayers[i].m_GridElements[j].m_Image);
+
+                    GridElement element = m_GridManager.GetGridElementOnPositionFromLayer(i, x, y);
+
+                    m_GridManager.PaintGridElementBasedOnID(element, file.m_GridLayers[i][j]);
+                }
+            }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e) {
+        private void ButtonPortfolioClick(object sender, RoutedEventArgs e) {
             System.Diagnostics.Process.Start("http://www.jenspetter.nl");
+        }
+
+        private void ButtonLinkedinClick(object sender, RoutedEventArgs e) {
+            System.Diagnostics.Process.Start("https://www.linkedin.com/in/jens-petter-97a0a0a9");
         }
 
         private void ButtonNewTilemapClick(object sender, RoutedEventArgs e) {

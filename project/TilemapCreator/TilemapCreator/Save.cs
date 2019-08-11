@@ -27,6 +27,8 @@ namespace TilemapCreator {
 
         public int m_TileWidth;
         public int m_TileHeight;
+
+        public string m_LoadedTilesetPath;
     }
 
     public class Save {

@@ -15,28 +15,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace TilemapCreator {
-    public enum TileSetElementType {
-        None,
-        Wall,
-        Ground,
-        DoorwayUp,
-        DoorwayRight,
-        DoorwayDown,
-        DoorwayLeft
-    }
 
     public class TileSetElement {
         public int m_ID;
-        public TileSetElementType m_Type;
-        public int m_ElementTypeID;
         public Image m_Image;
-
-        public TileSetElement() {
-            m_Type = TileSetElementType.None;
-
-            int typeIndex = (int)m_Type;
-            m_ElementTypeID = typeIndex;
-        }
+        public CroppedBitmap m_CroppedImage;
     }
 
     public class TileSetManager {
@@ -45,6 +28,7 @@ namespace TilemapCreator {
         private List<TileSetElement> m_TileSetElements = new List<TileSetElement>();
 
         private Image m_CurrentSelectedTileSetElement;
+        public string m_LoadedTilesetPath;
 
         public TileSetManager(Canvas tilesetCanvas, MainWindow mainwindow) {
             //Setting up base variables
@@ -61,7 +45,18 @@ namespace TilemapCreator {
             return null;
         }
 
-        public void LoadTileSet(BitmapImage image, int tileWidth, int tileHeight) {
+        public TileSetElement GetTileSetElementFromID(int id) {
+            for (int i = 0; i < m_TileSetElements.Count; i++) {
+                if (m_TileSetElements[i].m_ID == id) {
+                    return m_TileSetElements[i];
+                }
+            }
+            return null;
+        }
+
+        public void LoadTileSet(string loadedPath, BitmapImage image, int tileWidth, int tileHeight) {
+            m_LoadedTilesetPath = loadedPath;
+
             double xAmountOfTile = image.PixelWidth / tileWidth;
             double yAmountOfTile = image.PixelHeight / tileHeight;
 
@@ -97,6 +92,7 @@ namespace TilemapCreator {
                 TileSetElement tileElement = new TileSetElement();
                 tileElement.m_ID = i;
                 tileElement.m_Image = img;
+                tileElement.m_CroppedImage = cb;
                 m_TileSetElements.Add(tileElement);
             }
 

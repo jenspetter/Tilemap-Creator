@@ -40,6 +40,7 @@ namespace TilemapCreator {
 
     public class GridManager {
         private Canvas m_GridCanvas;
+        private TileSetManager m_TileSetManager;
         public List<GridLayer> m_GridLayers = new List<GridLayer>();
 
         public int m_LayerIndex;
@@ -47,8 +48,9 @@ namespace TilemapCreator {
         public int m_GridWidth;
         public int m_GridHeight;
 
-        public GridManager(Canvas gridCanvas, int gridWidth, int gridHeight) {
+        public GridManager(Canvas gridCanvas, TileSetManager tilesetManager, int gridWidth, int gridHeight) {
             m_GridCanvas = gridCanvas;
+            m_TileSetManager = tilesetManager;
             m_LayerIndex = -1;
             m_GridWidth = gridWidth;
             m_GridHeight = gridHeight;
@@ -136,6 +138,20 @@ namespace TilemapCreator {
 
         public UIElementCollection GetElements() {
             return m_GridCanvas.Children;
+        }
+
+        public void PaintGridElementBasedOnID(GridElement element, int id) {
+            if (id == -1) {
+                element.m_Image.Opacity = 0;
+                element.m_ID = -1;
+                element.m_Visible = false;
+            }
+            else {
+                element.m_Image.Opacity = 1;
+                element.m_Visible = true;
+                element.m_ID = id;
+                element.m_Image.Source = m_TileSetManager.GetTileSetElementFromID(id).m_CroppedImage;
+            }
         }
 
         public void CreateGrid(int width, int height) {
