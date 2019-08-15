@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TilemapCreator"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Room Designer" Height="520" Width="835">
+        Title="Room Designer" Height="536" Width="835">
     <Grid Margin="0,0,0,193">
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -23,7 +23,7 @@
             <StackPanel></StackPanel>
         </DockPanel>
 
-        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="464" Margin="248,19,0,-8" VerticalAlignment="Top" Width="424">
+        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="479" Margin="248,19,0,-161" VerticalAlignment="Top" Width="424">
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="194" Canvas.Left="10" Canvas.Top="10"><Run Text="Grid editor"/><LineBreak/><Run/></TextBlock>
             <Canvas Height="400" HorizontalAlignment="Left" Name="canvas1" VerticalAlignment="Top" Width="400" Canvas.Left="10" Canvas.Top="39" />
         </Canvas>
@@ -35,7 +35,7 @@
             <Button Click="AddLayer" Content="Add Layer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Canvas.Left="10" Canvas.Top="230"/>
         </Canvas>
 
-        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="200" Margin="677,283,0,-7" VerticalAlignment="Top" Width="142">
+        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="215" Margin="677,283,0,-161" VerticalAlignment="Top" Width="142">
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="194" Canvas.Left="10" Canvas.Top="10"><Run Text="Paint options"/><LineBreak/><Run/></TextBlock>
             <Button Click="SetPaintModePaint" Content="Paint" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="49"/>
             <Button Click="SetPaintModeErase" Content="Erase" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="74"/>
@@ -44,16 +44,18 @@
         </Canvas>
 
 
-        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="139" Margin="0,19,0,0" VerticalAlignment="Top" Width="243">
-            <Label Content="Width&#xD;&#xA;" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Height="31"/>
+        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="154" Margin="0,19,0,0" VerticalAlignment="Top" Width="243">
+            <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Canvas.Left="10" Canvas.Top="35"/>
+            <Label Content="Width&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Canvas.Left="10" Canvas.Top="62"/>
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="223" Canvas.Left="10" Canvas.Top="10"><Run Text="Tilemap configurations"/><LineBreak/><Run/></TextBlock>
-            <Label Content="Height&#xD;&#xA;&#xA;" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Height="31"/>
-            <TextBox Name="WidthInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" Margin="85,48,0,0" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52"/>
-            <TextBox Name="HeightInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" Margin="85,75,0,0" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52"/>
-            <Button Name="ButtonCreateGridRoom" Click="CreateGridRoom" Content="Create grid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Left="10" Canvas.Top="106"/>
+            <Label Content="Height&#xD;&#xA;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Canvas.Left="10" Canvas.Top="93"/>
+            <TextBox Name="WidthInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52" Canvas.Left="85" Canvas.Top="66"/>
+            <TextBox Name="HeightInput" PreviewTextInput="OnlyNumberInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="11" VerticalAlignment="Top" Width="52" Canvas.Left="85" Canvas.Top="93"/>
+            <Button Name="ButtonCreateGridRoom" Click="CreateGridRoom" Content="Create grid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Left="10" Canvas.Top="124"/>
+            <TextBox Name="TileMapNameInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Tilemap" VerticalAlignment="Top" Width="119" Canvas.Left="85" Canvas.Top="39"/>
         </Canvas>
 
-        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="320" Margin="0,163,0,-8" VerticalAlignment="Top" Width="243">
+        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="320" Margin="0,178,0,-161" VerticalAlignment="Top" Width="243">
             <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="194"><Run Text="TileSet editor"/><LineBreak/><Run/></TextBlock>
 
             <Label Content="Tile width" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Canvas.Left="10" Canvas.Top="44"/>

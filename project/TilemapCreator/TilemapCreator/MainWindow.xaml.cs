@@ -34,8 +34,7 @@ namespace TilemapCreator {
             m_TileSetManager.Init(TileSetCanvas);
             m_GridManager.Init(canvas1, m_TileSetManager, 
                 m_PaintManager, LayerStackPanel, 
-                int.Parse(WidthInput.Text), int.Parse(HeightInput.Text
-                ));
+                int.Parse(WidthInput.Text), int.Parse(HeightInput.Text));
 
             //Calling click create room function to make a room by default when program starts up
             CreateGridRoom(new object(), new RoutedEventArgs());
@@ -50,6 +49,7 @@ namespace TilemapCreator {
         /// <param name="e">routed event arguments</param>
         private void CreateGridRoom(object sender, RoutedEventArgs e) {
             m_GridManager.GenerateGrid();
+            TileMapNameInput.Text = "Tilemap";
             m_GridManager.AddLayer();
         }
 
@@ -112,7 +112,7 @@ namespace TilemapCreator {
         private void ButtonExportDataClick(object sender, RoutedEventArgs e) {
             SaveFile file = new SaveFile();
 
-            file.m_Name = "TEST";
+            file.m_Name = TileMapNameInput.Text;
             file.m_TilemapWidth = int.Parse(WidthInput.Text);
             file.m_TilemapHeigh = int.Parse(HeightInput.Text);
 
@@ -171,6 +171,7 @@ namespace TilemapCreator {
             SaveFile file = m_SaveClass.LoadFromJSON();
 
             //Tilemap configurations
+            TileMapNameInput.Text = file.m_Name;
             WidthInput.Text = file.m_TilemapWidth.ToString();
             HeightInput.Text = file.m_TilemapHeigh.ToString();
             m_GridManager.GenerateGrid();
@@ -229,7 +230,7 @@ namespace TilemapCreator {
                 ButtonExportDataClick(new object(), new RoutedEventArgs());
             }
             else {
-                m_GridManager.GenerateGrid();
+                CreateGridRoom(new object(), new RoutedEventArgs());
             }
         }
     }
