@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TilemapCreator"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Room Designer" Height="697.5" Width="1059">
+        Title="Room Designer" Height="520" Width="835">
     <Grid Margin="0,0,0,193">
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -28,18 +28,19 @@
             <Canvas Height="400" HorizontalAlignment="Left" Name="canvas1" VerticalAlignment="Top" Width="400" Canvas.Left="10" Canvas.Top="39" />
         </Canvas>
 
-        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="259" Margin="677,19,0,0" VerticalAlignment="Top" Width="351">
+        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="259" Margin="677,19,0,0" VerticalAlignment="Top" Width="142">
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="194" Canvas.Left="10" Canvas.Top="10"><Run Text="Layer editor"/><LineBreak/><Run/></TextBlock>
-            <StackPanel Name="LayerStackPanel" Background="Gray" Orientation="Vertical" Height="181" Canvas.Left="10" Canvas.Top="44" Width="331">
+            <StackPanel Name="LayerStackPanel" Background="Gray" Orientation="Vertical" Height="181" Canvas.Left="10" Canvas.Top="44" Width="122">
             </StackPanel>
             <Button Click="AddLayer" Content="Add Layer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Canvas.Left="10" Canvas.Top="230"/>
         </Canvas>
 
-        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="186" Margin="677,283,0,0" VerticalAlignment="Top" Width="142">
+        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="200" Margin="677,283,0,-7" VerticalAlignment="Top" Width="142">
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="194" Canvas.Left="10" Canvas.Top="10"><Run Text="Paint options"/><LineBreak/><Run/></TextBlock>
             <Button Click="SetPaintModePaint" Content="Paint" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="49"/>
             <Button Click="SetPaintModeErase" Content="Erase" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="74"/>
             <Button Click="SetPaintModeFill" Content="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="99"/>
+            <Button Click="SetPaintModeDeleteFill" Content="Delete Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="124"/>
         </Canvas>
 
 

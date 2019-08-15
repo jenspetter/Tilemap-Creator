@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 namespace TilemapCreator {
 
+    /// <summary>
+    /// Save extension enum
+    /// </summary>
     public enum SaveExtensionType {
         JSON
     }
 
+    /// <summary>
+    /// Open extension enum
+    /// </summary>
     public enum OpenExtensionType {
         TileSet,
         PNG,
@@ -18,7 +24,15 @@ namespace TilemapCreator {
         JSON
     }
 
+    /// <summary>
+    /// Custom static Files class
+    /// </summary>
     public static class Files {
+        /// <summary>
+        /// Static Save function
+        /// </summary>
+        /// <param name="saveType">Save type extension</param>
+        /// <returns></returns>
         public static SaveFileDialog OpenSaveDialog(SaveExtensionType saveType) {
             SaveFileDialog saveDialog = new SaveFileDialog();
 
@@ -31,6 +45,11 @@ namespace TilemapCreator {
             return null;
         }
 
+        /// <summary>
+        /// Static open file function
+        /// </summary>
+        /// <param name="openType">Open type extension</param>
+        /// <returns></returns>
         public static OpenFileDialog OpenFileDialog(OpenExtensionType openType) {
             OpenFileDialog openDialog = new OpenFileDialog();
 

@@ -104,17 +104,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\DoorwayDown.png" />
-    <Resource Include="Resources\DoorwayLeft.png" />
-    <Resource Include="Resources\DoorwayRight.png" />
-    <Resource Include="Resources\DoorwayUp.png" />
-    <Resource Include="Resources\Ground.png" />
-    <Resource Include="Resources\InvisibleTile.png" />
     <Resource Include="Resources\NoTile.png" />
-    <Resource Include="Resources\sheet.png" />
-    <Resource Include="Resources\test.png" />
-    <Resource Include="Resources\TileSet.png" />
-    <Resource Include="Resources\Wall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\LayerVisible.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\LayerNotVisible.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

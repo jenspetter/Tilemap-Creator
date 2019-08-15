@@ -1,22 +1,12 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
-using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TilemapCreator {
+    /// <summary>
+    /// Save file class, used to export to JSON
+    /// </summary>
     public class SaveFile {
         public string m_Name;
 
@@ -31,15 +21,27 @@ namespace TilemapCreator {
         public string m_LoadedTilesetPath;
     }
 
+    /// <summary>
+    /// Save class
+    /// </summary>
     public class Save {
-
+        //Only one SaveFile at one time
         private SaveFile m_SaveFile;
 
+        /// <summary>
+        /// Sets the Save File
+        /// </summary>
+        /// <param name="saveFile">SaveFile to set</param>
+        /// <returns></returns>
         public SaveFile SetSaveFile(SaveFile saveFile) {
             m_SaveFile = saveFile;
             return m_SaveFile;
         }
 
+        /// <summary>
+        /// Loads from JSON into a SaveFile object
+        /// </summary>
+        /// <returns>SaveFile object</returns>
         public SaveFile LoadFromJSON() {
             OpenFileDialog openDialog = Files.OpenFileDialog(OpenExtensionType.JSON);
 
@@ -51,6 +53,9 @@ namespace TilemapCreator {
             return null;
         }
 
+        /// <summary>
+        /// Exports a SaveFile object to JSON
+        /// </summary>
         public void ExportToJSON() {
             SaveFileDialog saveDialog = Files.OpenSaveDialog(SaveExtensionType.JSON);
 
