@@ -27,7 +27,7 @@ namespace TilemapCreator {
         private MainWindow m_MainWindow;
         private List<TileSetElement> m_TileSetElements = new List<TileSetElement>();
 
-        private Image m_CurrentSelectedTileSetElement;
+        public TileSetElement m_CurrentSelectedTileSetElement;
         public string m_LoadedTilesetPath;
 
         public TileSetManager(Canvas tilesetCanvas, MainWindow mainwindow) {
@@ -116,7 +116,7 @@ namespace TilemapCreator {
             Canvas.SetLeft(b, imgLeft);
             Canvas.SetTop(b, imgTop);
 
-            m_CurrentSelectedTileSetElement = img;
+            m_CurrentSelectedTileSetElement.m_Image = img;
         }
     }
 }

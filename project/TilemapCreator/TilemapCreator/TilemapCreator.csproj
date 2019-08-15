@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Files.cs" />
     <Compile Include="GridManager.cs" />
+    <Compile Include="PaintManager.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="TileSetManager.cs" />
     <Page Include="MainWindow.xaml">

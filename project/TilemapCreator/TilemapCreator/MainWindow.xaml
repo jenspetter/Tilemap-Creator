@@ -35,11 +35,11 @@
             <Button Click="AddLayer" Content="Add Layer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Canvas.Left="10" Canvas.Top="230"/>
         </Canvas>
 
-        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="186" Margin="677,283,0,0" VerticalAlignment="Top" Width="351">
+        <Canvas Background="DarkGray" HorizontalAlignment="Left" Height="186" Margin="677,283,0,0" VerticalAlignment="Top" Width="142">
             <TextBlock FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="194" Canvas.Left="10" Canvas.Top="10"><Run Text="Paint options"/><LineBreak/><Run/></TextBlock>
             <Button Click="SetPaintModePaint" Content="Paint" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="49"/>
-            <Button Click="SetPaintModeErase" Content="Erase" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="89" Canvas.Top="49"/>
-            <Button Click="SetPaintModeFill" Content="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="168" Canvas.Top="49"/>
+            <Button Click="SetPaintModeErase" Content="Erase" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="74"/>
+            <Button Click="SetPaintModeFill" Content="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Canvas.Left="10" Canvas.Top="99"/>
         </Canvas>
 
 

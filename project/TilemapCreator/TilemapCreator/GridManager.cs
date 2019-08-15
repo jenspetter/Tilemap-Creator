@@ -40,6 +40,9 @@ namespace TilemapCreator {
 
     public class GridManager {
         private Canvas m_GridCanvas;
+        private StackPanel m_GridLayerStackPanel;
+
+        private PaintManager m_PaintManager;
         private TileSetManager m_TileSetManager;
         public List<GridLayer> m_GridLayers = new List<GridLayer>();
 
@@ -48,9 +51,11 @@ namespace TilemapCreator {
         public int m_GridWidth;
         public int m_GridHeight;
 
-        public GridManager(Canvas gridCanvas, TileSetManager tilesetManager, int gridWidth, int gridHeight) {
+        public GridManager(Canvas gridCanvas, TileSetManager tilesetManager, PaintManager paintManager, StackPanel stackPanel, int gridWidth, int gridHeight) {
             m_GridCanvas = gridCanvas;
+            m_GridLayerStackPanel = stackPanel;
             m_TileSetManager = tilesetManager;
+            m_PaintManager = paintManager;
             m_LayerIndex = -1;
             m_GridWidth = gridWidth;
             m_GridHeight = gridHeight;
@@ -154,37 +159,149 @@ namespace TilemapCreator {
             }
         }
 
-        public void CreateGrid(int width, int height) {
+        public void GenerateGrid() {
+            BitmapImage noTileBitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/NoTile.png", UriKind.Absolute));
+
             if (m_GridCanvas.Children.Count > 0) {
                 m_GridCanvas.Children.Clear();
             }
+            if (m_GridLayers.Count > 0) {
+                m_GridLayers.Clear();
+            }
+            if (m_GridLayerStackPanel.Children.Count > 0) {
+                m_GridLayerStackPanel.Children.Clear();
+            }
 
-            double widthHeight = m_GridCanvas.Width / width;
+            double widthHeight = m_GridCanvas.Width / m_GridWidth;
 
             int xStep = -1;
             int yStep = 0;
 
-            int size = width * height;
+            int size = m_GridWidth * m_GridHeight;
 
-            Image[] carImg = new Image[size];
-
-            for (int i = 0; i < carImg.Length; i++) {
-                carImg[i] = new Image();
-                carImg[i].Stretch = Stretch.Fill;
-                carImg[i].Width = widthHeight;
-                carImg[i].Height = widthHeight;
+            for (int i = 0; i < size; i++) {
+                Image img = new Image();
+                img.Source = noTileBitmap;
+                img.Stretch = Stretch.Fill;
+                img.Width = widthHeight;
+                img.Height = widthHeight;
+                img.MouseEnter += new MouseEventHandler(m_PaintManager.Image_MouseEnter);
+                img.MouseDown += new MouseButtonEventHandler(m_PaintManager.Image_MouseEnter);
 
                 xStep++;
 
-                if (xStep > (width - 1)) {
+                if (xStep > m_GridWidth - 1) {
                     xStep = 0;
                     yStep++;
                 }
 
-                Canvas.SetLeft(carImg[i], 0 + (widthHeight * xStep));
-                Canvas.SetTop(carImg[i], 0 + (widthHeight * yStep));
-                m_GridCanvas.Children.Add(carImg[i]);
+                Canvas.SetLeft(img, 0 + (widthHeight * xStep));
+                Canvas.SetTop(img, 0 + (widthHeight * yStep));
+
+                m_GridCanvas.Children.Add(img);
             }
+
+            m_LayerIndex = -1;
+            m_GridLayers.Add(new GridLayer("Layer 1"));
+        }
+
+        public void AddLayer(object sender, RoutedEventArgs e) {
+            m_LayerIndex++;
+
+            GridLayer layer = new GridLayer("Layer " + m_LayerIndex.ToString());
+            AddGridLayer(layer);
+
+            double widthHeight = m_GridCanvas.Width / m_GridWidth;
+
+            int xStep = -1;
+            int yStep = 0;
+
+            int size = m_GridWidth * m_GridHeight;
+
+            for (int i = 0; i < size; i++) {
+                GridElement element = new GridElement();
+
+                element.m_GridID = i;
+                element.m_ID = -1;
+                element.m_GridLayer = m_LayerIndex;
+
+                element.m_Image = new Image();
+                element.m_Image.Stretch = Stretch.Fill;
+                element.m_Image.Width = widthHeight;
+                element.m_Image.Height = widthHeight;
+                element.m_Image.MouseEnter += new MouseEventHandler(m_PaintManager.Image_MouseEnter);
+                element.m_Image.MouseDown += new MouseButtonEventHandler(m_PaintManager.Image_MouseEnter);
+
+                xStep++;
+
+                if (xStep > m_GridWidth - 1) {
+                    xStep = 0;
+                    yStep++;
+                }
+
+                Canvas.SetLeft(element.m_Image, 0 + (widthHeight * xStep));
+                Canvas.SetTop(element.m_Image, 0 + (widthHeight * yStep));
+
+                m_GridCanvas.Children.Add(element.m_Image);
+
+                element.m_PositionX = Canvas.GetLeft(element.m_Image);
+                element.m_PositionY = Canvas.GetTop(element.m_Image);
+
+                AddGridElement(element);
+            }
+
+            StackPanel sp = new StackPanel();
+            sp.Orientation = Orientation.Horizontal;
+
+            Button layerButton = new Button();
+            layerButton.Content = layer.m_Name;
+            layerButton.Click += new RoutedEventHandler(ButtonLayerSelect);
+
+            CheckBox layerCheckbox = new CheckBox();
+            layerCheckbox.Content = "Visible";
+            layerCheckbox.Click += new RoutedEventHandler(ButtonLayerVisibilityClick);
+
+            sp.Children.Add(layerButton);
+            sp.Children.Add(layerCheckbox);
+            m_GridLayerStackPanel.Children.Add(sp);
+        }
+
+        private void ButtonLayerSelect(object sender, RoutedEventArgs e) {
+            Button senderButton = (Button)sender;
+            int buttonIndexInStackPanel = 0;
+
+            for (int i = 0; i < m_GridLayerStackPanel.Children.Count; i++) {
+                StackPanel LayerStackPanelChild = (StackPanel)m_GridLayerStackPanel.Children[i];
+
+                for (int j = 0; j < LayerStackPanelChild.Children.Count; j++) {
+                    Button childButton = (Button)LayerStackPanelChild.Children[i];
+
+                    if (childButton != null && childButton == senderButton) {
+                        buttonIndexInStackPanel = i;
+                    }
+                }
+            }
+
+            m_LayerIndex = buttonIndexInStackPanel;
+        } 
+
+        private void ButtonLayerVisibilityClick(object sender, RoutedEventArgs e) {
+            CheckBox senderButton = (CheckBox)sender;
+            int buttonIndexInStackPanel = 0;
+
+            for (int i = 0; i < m_GridLayerStackPanel.Children.Count; i++) {
+                StackPanel LayerStackPanelChild = (StackPanel)m_GridLayerStackPanel.Children[i];
+
+                for (int j = 0; j < LayerStackPanelChild.Children.Count; j++) {
+                    CheckBox childButton = (CheckBox)LayerStackPanelChild.Children[i];
+
+                    if (childButton != null && childButton == senderButton) {
+                        buttonIndexInStackPanel = i;
+                    }
+                }
+            }
+
+            SetVisibilityToLayer(buttonIndexInStackPanel, !m_GridLayers[buttonIndexInStackPanel].m_Visible);
         }
     }
 }
