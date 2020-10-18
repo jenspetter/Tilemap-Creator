@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TilemapCreator"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Room Designer" Height="536" Width="835">
+        Title="TileEdit" Height="536" Width="835">
     <Grid Margin="0,0,0,193">
         <DockPanel>
             <Menu DockPanel.Dock="Top">

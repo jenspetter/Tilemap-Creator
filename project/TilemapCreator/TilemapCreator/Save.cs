@@ -8,17 +8,17 @@ namespace TilemapCreator {
     /// Save file class, used to export to JSON
     /// </summary>
     public class SaveFile {
-        public string m_Name;
+        public string Name;
 
-        public int m_TilemapWidth;
-        public int m_TilemapHeigh;
+        public int TilemapWidth;
+        public int TilemapHeight;
 
-        public List<List<int>> m_GridLayers = new List<List<int>>();
+        public List<List<int>> GridLayers = new List<List<int>>();
 
-        public int m_TileWidth;
-        public int m_TileHeight;
+        public int TileWidth;
+        public int TileHeight;
 
-        public string m_LoadedTilesetPath;
+        public string LoadedTilesetPath;
     }
 
     /// <summary>

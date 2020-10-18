@@ -112,27 +112,27 @@ namespace TilemapCreator {
         private void ButtonExportDataClick(object sender, RoutedEventArgs e) {
             SaveFile file = new SaveFile();
 
-            file.m_Name = TileMapNameInput.Text;
-            file.m_TilemapWidth = int.Parse(WidthInput.Text);
-            file.m_TilemapHeigh = int.Parse(HeightInput.Text);
+            file.Name = TileMapNameInput.Text;
+            file.TilemapWidth = int.Parse(WidthInput.Text);
+            file.TilemapHeight = int.Parse(HeightInput.Text);
 
             for (int i = 0; i < m_GridManager.m_GridLayers.Count; i++) {
                 List<int> addingList = new List<int>();
-                file.m_GridLayers.Add(addingList);
+                file.GridLayers.Add(addingList);
                 int count = 0;
                 for (int j = 0; j < m_GridManager.m_GridLayers[i].m_GridElements.Count; j++) {
-                    file.m_GridLayers[i].Add(m_GridManager.m_GridLayers[i].m_GridElements[j].m_ID);
+                    file.GridLayers[i].Add(m_GridManager.m_GridLayers[i].m_GridElements[j].m_ID);
                     count++;
                 }
 
                 if (count == 0) {
-                    file.m_GridLayers.Remove(addingList);
+                    file.GridLayers.Remove(addingList);
                 }
             }
 
-            file.m_TileWidth = int.Parse(TileWidthInput.Text);
-            file.m_TileHeight = int.Parse(TileHeightInput.Text);
-            file.m_LoadedTilesetPath = m_TileSetManager.m_LoadedTilesetPath;
+            file.TileWidth = int.Parse(TileWidthInput.Text);
+            file.TileHeight = int.Parse(TileHeightInput.Text);
+            file.LoadedTilesetPath = m_TileSetManager.m_LoadedTilesetPath;
 
             m_SaveClass.SetSaveFile(file);
 
@@ -171,16 +171,16 @@ namespace TilemapCreator {
             SaveFile file = m_SaveClass.LoadFromJSON();
 
             //Tilemap configurations
-            TileMapNameInput.Text = file.m_Name;
-            WidthInput.Text = file.m_TilemapWidth.ToString();
-            HeightInput.Text = file.m_TilemapHeigh.ToString();
+            TileMapNameInput.Text = file.Name;
+            WidthInput.Text = file.TilemapWidth.ToString();
+            HeightInput.Text = file.TilemapHeight.ToString();
             m_GridManager.GenerateGrid();
 
             //Tileset editor
-            m_TileSetManager.LoadTileSet(file.m_LoadedTilesetPath, int.Parse(TileWidthInput.Text), int.Parse(TileHeightInput.Text));
+            m_TileSetManager.LoadTileSet(file.LoadedTilesetPath, int.Parse(TileWidthInput.Text), int.Parse(TileHeightInput.Text));
 
             //Layer editor
-            for (int i = 0; i < file.m_GridLayers.Count; i++) {
+            for (int i = 0; i < file.GridLayers.Count; i++) {
                 m_GridManager.AddLayer();
                 Console.WriteLine("ADDING LAYER");
             }
@@ -194,7 +194,7 @@ namespace TilemapCreator {
 
                     GridElement element = m_GridManager.GetGridElementOnPositionFromLayer(i, x, y);
 
-                    m_PaintManager.ColorGridElementBasedOnID(element, file.m_GridLayers[i][j]);
+                    m_PaintManager.ColorGridElementBasedOnID(element, file.GridLayers[i][j]);
                 }
             }
         }
